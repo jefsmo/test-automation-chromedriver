@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Test.Automation.ChromeDriver</id>
+    <version>2.30.0</version>
+    <authors>jefsmo</authors>
+    <owners>ChromeDriver is developed by members of the Chromium and WebDriver teams.</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <iconUrl>https://raw.githubusercontent.com/jefsmo/Test.Automation/master/Test.Automation.ChromeDriver/chromedriver-logo.gif</iconUrl>
+    <projectUrl>https://github.com/jefsmo/VSTest-Automation-BaseClass</projectUrl>
+    <description>ChromeDriver is a Selenium WebDriver for the Chrome browser.</description>
+    <releaseNotes>
+      ChromeDriver v2.30 (2017-03-09)
+      Supports Chrome v58-60
+    </releaseNotes>
+    <copyright>© 2016 jefsmo.</copyright>
+  </metadata>
+  <files>
+    <file src="chromedriver.exe" target="content\chromedriver.exe" />
+  </files>
+</package>
