@@ -1,102 +1,82 @@
-﻿# Test.Automation.ChromeDriver
+# Test.Automation.ChromeDriver
+
 **Readme.md**
+
 ### Version History
 |Version|Date|Notes|
 |---|---|---|
-|ChromeDriver v2.30 |2017-06-07|Supports Chrome v58-60|
-### Download Link
-[**ChromeDriver**](https://sites.google.com/a/chromium.org/chromedriver/)
-### ChromeDriver Intro
-- WebDriver is an open source tool for automated testing of webapps across many browsers.  
-- It provides capabilities for navigating to web pages, user input, JavaScript execution, and more.  
-- ChromeDriver is a standalone server which implements WebDriver's wire protocol for Chromium.
+|v2.40|2018-06-08|Supports Chrome v66-68|
+|v2.35| 2018-01-10|Supports Chrome v62-64|
+|v2.33| 2017-11-11|Supports Chrome v60-62|
+|v2.30| 2017-06-07|Supports Chrome v58-60|
 
-## NuGet 4.0+
-[**Create .Net Standard Packages**](https://docs.microsoft.com/en-us/nuget/guides/create-net-standard-packages-vs2017)  
-[**PackageReference in Project Files**](https://docs.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files)  
-[**Packing Using a .nuspec**](https://docs.microsoft.com/en-us/nuget/schema/msbuild-targets)  
-[**NuGet Documentation**](http://blog.nuget.org/20170316/NuGet-now-fully-integrated-into-MSBuild.html)  
+## WebDriver Download Links
 
-NuGet 4.0+ can work directly with the information in a .csproj file without requring a separate `.nuspec` or `project.json` file. 
-All the metadata that was previously stored in those configuration files can be instead stored in the `.csproj` file directly, as described here.
+|Browser | WebDriver | Download |Notes|
+|-----|-----|-----|----|
+| [Chrome](https://www.google.com/chrome/browser/desktop/index.html?system=true&standalone=1) | chromedriver.exe | [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) | Use Chrome's 'alternative installer'<br>Recommended for testing Web applications built with moden javascript frameworks like React and Ember |
+| HeadLess Chrome | chromedriver.exe | see above | headless web testing |
+| [Internet Explorer (IE)](https://support.microsoft.com/en-us/help/17621/internet-explorer-downloads) | IEDriverServer.exe | [IEDriverServer](http://selenium-release.storage.googleapis.com/index.html) |Default browser prior to Windows 10 |
+| [Microsoft Edge](https://www.microsoft.com/en-us/windows/microsoft-edge#AoPhgFHFcSwpqU6Z.97) | MicrosoftWebDriver.exe | [MicrosoftWebDriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/)| Default browser for Windows 10 |
+| PhantomJS | phantomjs.exe | [PhantomJS](http://phantomjs.org/download.html) | PhantomJS is **deprecated!**<br>The project has been abandoned.<br>Use Headless Chrome for headless web testing |
 
-With MSBuild 15.1+, NuGet is also a first-class MSBuild citizen with the `pack` and `restore` targets. 
-These targets allow you to work with NuGet as you would with any other MSBuild task or target.
-### MSBUILD Command
-- Naviage to the .csproj directory
-- Run `MSBUILD` command
+## Create a Local NuGet Package with OctoPack
+- Add a `.nuspec` file to each project in the solution that you want to package with NuGet.
+- The `.nuspec` file name **must be the same name as the project** with the `.nuspec` extension
+- Open a '`Developer Command Prompt for VS2017`' command window.
+- Navigate to the solution or project that you want to OctoPack.
+- Run the following command:
 
 ```
-msbuild /t:pack /p:Configuration=Release 
+// To Create packages for each project in the solution:
+MSBUILD Test.Automation.sln /t:Rebuild /p:Configuration=Release /p:RunOctoPack=true /p:OctoPackPackageVersion=1.0.0 /p:OctoPackPublishPackageToFileShare=C:\Packages
 
-# Output is copied to the tools folder instead of lib folder.
-msbuild /t:pack /p:Configuration=Release /p:IsTool=true  
+// To Create a package for a single project:
+MSBUILD Test.Automation.ChromeDriver.csproj /t:Rebuild /p:Configuration=Release /p:RunOctoPack=true /p:OctoPackPackageVersion=1.0.0 /p:OctoPackPublishPackageToFileShare=C:\Packages
 
-# Use .nuspec file.
-msbuild /t:pack /p:Configuration=Release Test.Automation.ChromeDriver.csproj /p:NuspecFile=Test.Automation.ChromeDriver.2.30.0.nuspec /p:NuspecBasePath=.
 ```
-### Test.Automation.Chromdriver.2.30.0.nuspec File
-```
-<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
-  <metadata>
-    <id>Test.Automation.ChromeDriver</id>
-    <version>2.30.0</version>
-    <authors>jefsmo</authors>
-    <owners>ChromeDriver is developed by members of the Chromium and WebDriver teams.</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <iconUrl>https://raw.githubusercontent.com/jefsmo/Test.Automation/master/Test.Automation.ChromeDriver/chromedriver-logo.gif</iconUrl>
-    <projectUrl>https://github.com/jefsmo/VSTest-Automation-BaseClass</projectUrl>
-    <description>ChromeDriver is a Selenium WebDriver for the Chrome browser.</description>
-    <releaseNotes>
-      ChromeDriver v2.30 (2017-03-09)
-      Supports Chrome v58-60
-    </releaseNotes>
-    <copyright>© 2016 jefsmo.</copyright>
-  </metadata>
-  <files>
-    <file src="chromedriver.exe" target="content\chromedriver.exe" />
-  </files>
-</package>
-```
-### Test.Automation.ChromeDriver.csproj File  
-```
-<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard1.6</TargetFramework>
-    <PackageVersion>2.30.0</PackageVersion>
-  </PropertyGroup>
+#### MSBUILD OctoPack Command Syntax
+|Switch|Value|Definition|
+|-----|-----|-----|
+|`/t:Rebuild`|  |MSBUILD Rebuilds the project(s).|
+|`/p:Configuration=`|`Release`|Creates and packages a Release build.|
+|`/p:RunOctoPack=`|`true`|Creates packages with Octopack using the .nuspec file layout.|
+|`/p:OctoPackPackageVersion=`|`1.0.0`|Updates Package Version.|
+|`/p:OctoPackPublishPackageToFileShare=`|`C:\Packages`|Copies packages to local file location.|
+    
+#### Other OctoPack Options:
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile></DocumentationFile>
-  </PropertyGroup>
+|Switch|Value|Description|
+|-----|-----|-----|
+|`/p:Configuration=`|`[ Release | Debug ]`|The build configuration|
+|`/p:RunOctoPack=`|`[ true | false ]`|Enable or Disable OctoPack|
+|`/p:OctoPackPackageVersion=`|`1.2.3`|Version number of the NuGet package. By default, OctoPack gets the version from your assembly version attributes. Set this parameter to use an explicit version number.|
+|`/p:OctoPackPublishPackageToFileShare=`|`C:\Packages`|Copies packages to the specified directory.|
+|`/p:OctoPackPublishPackageToHttp=`|`http://my-nuget-server/api/v2/package`| Pushes the package to the NuGet server|
+|`/p:OctoPackPublishApiKey=`|`ABCDEFGMYAPIKEY`|API key to use when publishing|
+|`/p:OctoPackNuGetArguments=`| `-Verbosity detailed`|Use this parameter to specify additional command line parameters that will be passed to NuGet.exe pack.|
+|`/p:OctoPackNuGetExePath=`|`C:\MyNuGetPath\`|OctoPack comes with a bundled version of NuGet.exe. Use this parameter to force OctoPack to use a different NuGet.exe instead.|
+|`/p:OctoPackNuSpecFileName=`|`<C#/VB_ProjectName>.nuspec`|The NuSpec file to use.|
+
+## Viewing Local Packages
+- Install NuGet Package Explorer to view local packages.  
+- [NuGetPackageExplorer](https://github.com/NuGetPackageExplorer/NuGetPackageExplorer)
+
+## NuGet Command Line Reference
+Ensure that NuGet.exe is in your path.  
+Running NuGet using a .nuspec file allows greater control over what files are packed and excluded.  
   
-  <Target Name="CopyPackage" AfterTargets="Pack">
-    <Copy SourceFiles="$(OutputPath)..\$(PackageId).$(PackageVersion).nupkg" DestinationFolder="C:\Packages\" />
-  </Target>
-  
-  <ItemGroup>
-    <None Remove="chromedriver.exe" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Content Include="chromedriver.exe">
-      <Pack>true</Pack>
-      <PackagePath>content\</PackagePath>
-    </Content>
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="icon\" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <None Update="chromedriver.exe">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  
-</Project>
 ```
+NUGET PACK Test.Automation.Selenium.nuspec -Verbosity detailed  -OutputDirectory "C:\Packages"
+```
+
+#### Explaination of Command Arguments
+|Argument|Value|Description|
+|----|----|----|
+|`PACK`|`Test.Automation.Selenium.nuspec`|Create a package from .nuspec file|
+|`-Verbosity`|`detailed`|Displays verbose command output for debugging|
+|`-OutputDirectory`|`"C:\Packages"`|Copies package to local directory|
+
+
 
