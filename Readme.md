@@ -3,37 +3,45 @@
 **Readme.md**
 
 ### Version History
-|Version|Date|Notes|
+|Date|Version|Notes|
 |---|---|---|
-|v2.40|2018-06-08|Supports Chrome v66-68|
-|v2.35| 2018-01-10|Supports Chrome v62-64|
-|v2.33| 2017-11-11|Supports Chrome v60-62|
-|v2.30| 2017-06-07|Supports Chrome v58-60|
+|2018-06-08|v2.40|Supports Chrome v66-68|
+|2018-01-10|v2.35| Supports Chrome v62-64|
+|2017-11-11|v2.33| Supports Chrome v60-62|
+|2017-06-07|v2.30| Supports Chrome v58-60|
+
+## Contents
+[WebDriver Download Links](#webdriver-download-links)  
+[View Local Packages](#view-local-packages)  
+[Create Local Packages](#create-local-packages)  
+[NuGet Command Line Reference](#nuget-command-line-reference)  
 
 ## WebDriver Download Links
 
 |Browser | WebDriver | Download |Notes|
 |-----|-----|-----|----|
-| [Chrome](https://www.google.com/chrome/browser/desktop/index.html?system=true&standalone=1) | chromedriver.exe | [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) | Use Chrome's 'alternative installer'<br>Recommended for testing Web applications built with moden javascript frameworks like React and Ember |
-| HeadLess Chrome | chromedriver.exe | see above | headless web testing |
-| [Internet Explorer (IE)](https://support.microsoft.com/en-us/help/17621/internet-explorer-downloads) | IEDriverServer.exe | [IEDriverServer](http://selenium-release.storage.googleapis.com/index.html) |Default browser prior to Windows 10 |
-| [Microsoft Edge](https://www.microsoft.com/en-us/windows/microsoft-edge#AoPhgFHFcSwpqU6Z.97) | MicrosoftWebDriver.exe | [MicrosoftWebDriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/)| Default browser for Windows 10 |
-| PhantomJS | phantomjs.exe | [PhantomJS](http://phantomjs.org/download.html) | PhantomJS is **deprecated!**<br>The project has been abandoned.<br>Use Headless Chrome for headless web testing |
+| [Chrome](https://www.google.com/chrome/browser/desktop/index.html?system=true&standalone=1) | chromedriver.exe | [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) | [Wiki](https://github.com/SeleniumHQ/selenium/wiki/ChromeDriver) <br> Use Chrome's 'alternative installer'<br>Recommended for testing Web applications built with moden javascript frameworks like React and Ember |
+| No browser Chrome is headless | chromedriver.exe | see ChromeDriver | [README](https://chromium.googlesource.com/chromium/src/+/lkgr/headless/README.md) <br> headless web testing <br> **`IsHeadless="true"`** |
+| [Internet Explorer (IE)](https://support.microsoft.com/en-us/help/17621/internet-explorer-downloads) | IEDriverServer.exe | [IEDriverServer](http://selenium-release.storage.googleapis.com/index.html) | [Required Configuration](https://github.com/SeleniumHQ/selenium/wiki/InternetExplorerDriver#required-configuration) <br> Default browser prior to Windows 10 |
+| [Microsoft Edge](https://www.microsoft.com/en-us/windows/microsoft-edge#AoPhgFHFcSwpqU6Z.97) | MicrosoftWebDriver.exe | [MicrosoftWebDriver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/)| [WebDriver](https://docs.microsoft.com/en-us/microsoft-edge/webdriver) <br> Default browser for Windows 10 |
 
-## Create a Local NuGet Package with OctoPack
+## View Local Packages
+- Install NuGet Package Explorer to view local packages.  
+- [NuGetPackageExplorer](https://github.com/NuGetPackageExplorer/NuGetPackageExplorer)
+
+## Create Local Packages
 - Add a `.nuspec` file to each project in the solution that you want to package with NuGet.
 - The `.nuspec` file name **must be the same name as the project** with the `.nuspec` extension
 - Open a '`Developer Command Prompt for VS2017`' command window.
 - Navigate to the solution or project that you want to OctoPack.
 - Run the following command:
 
-```
+```text
 // To Create packages for each project in the solution:
 MSBUILD Test.Automation.sln /t:Rebuild /p:Configuration=Release /p:RunOctoPack=true /p:OctoPackPackageVersion=1.0.0 /p:OctoPackPublishPackageToFileShare=C:\Packages
 
 // To Create a package for a single project:
 MSBUILD Test.Automation.ChromeDriver.csproj /t:Rebuild /p:Configuration=Release /p:RunOctoPack=true /p:OctoPackPackageVersion=1.0.0 /p:OctoPackPublishPackageToFileShare=C:\Packages
-
 ```
 
 #### MSBUILD OctoPack Command Syntax
@@ -59,15 +67,11 @@ MSBUILD Test.Automation.ChromeDriver.csproj /t:Rebuild /p:Configuration=Release 
 |`/p:OctoPackNuGetExePath=`|`C:\MyNuGetPath\`|OctoPack comes with a bundled version of NuGet.exe. Use this parameter to force OctoPack to use a different NuGet.exe instead.|
 |`/p:OctoPackNuSpecFileName=`|`<C#/VB_ProjectName>.nuspec`|The NuSpec file to use.|
 
-## Viewing Local Packages
-- Install NuGet Package Explorer to view local packages.  
-- [NuGetPackageExplorer](https://github.com/NuGetPackageExplorer/NuGetPackageExplorer)
-
 ## NuGet Command Line Reference
 Ensure that NuGet.exe is in your path.  
 Running NuGet using a .nuspec file allows greater control over what files are packed and excluded.  
   
-```
+```text
 NUGET PACK Test.Automation.Selenium.nuspec -Verbosity detailed  -OutputDirectory "C:\Packages"
 ```
 
